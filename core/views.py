@@ -13,7 +13,7 @@ class DashboardView(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = ObatSerializer
     filter_backends = [SearchFilter]
-    search_fields = ['nama_Obat']
+    search_fields = ['nama_obat']
     
     def get(self, request):
         bahan = Obat.objects.all()
