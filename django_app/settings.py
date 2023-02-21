@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'django_app',
-    'bahan',
+    'core',
 ]
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "errors",

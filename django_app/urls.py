@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.views.static import serve
 from django.urls import path
-from bahan.views import *
+from core.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
