@@ -9,11 +9,11 @@ class BahanSerializer(serializers.ModelSerializer):
     gambar = serializers.SerializerMethodField()
     
     def get_gambar(self, obj):
-        return build_url(obj.gambar.url)
+        return build_url(obj.gambar)
     
     class Meta:
         model = Bahan
-        fields = ('nama_bahan','gambar')
+        fields = ('nama_bahan','gambar', 'keterangan')
         
 class ObatSerializer(serializers.ModelSerializer):
     gambar = serializers.SerializerMethodField()
@@ -24,7 +24,7 @@ class ObatSerializer(serializers.ModelSerializer):
     bahan_5 = BahanSerializer()
     
     def get_gambar(self, obj):
-        return build_url(obj.gambar.url)
+        return build_url(obj.gambar)
     
     class Meta:
         model = Obat

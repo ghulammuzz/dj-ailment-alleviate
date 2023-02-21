@@ -4,7 +4,7 @@ class Bahan(models.Model):
     nama_bahan = models.CharField(max_length=100)
     keterangan = models.TextField(default='_')
     gambar = models.ImageField(upload_to='bahan/', null=True, blank=True)
-    # takaran = models.CharField(max_length=100, default='_')
+    cara_pakai = models.TextField(default='_')
     
     def __str__(self):
         return self.nama_bahan
