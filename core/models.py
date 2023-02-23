@@ -21,13 +21,16 @@ class Obat(models.Model):
     bahan_6 = models.ForeignKey(Bahan, on_delete=models.SET_NULL, related_name='bahan_6', null=True, blank=True)
     bahan_7 = models.ForeignKey(Bahan, on_delete=models.SET_NULL, related_name='bahan_7', null=True, blank=True)
     
+    cara_pembuatan = models.TextField(default='_')
+    aturan_pemakaian = models.TextField(default='_')
+    
     def __str__(self):
         return self.nama_obat
     
-class Penyakit(models.Model):
-    nama_penyakit = models.CharField(max_length=100)
+class Gejala(models.Model):
+    nama_gejala = models.CharField(max_length=100)
     keterangan = models.TextField(default='_')
-    gambar = models.ImageField(upload_to='penyakit/', null=True, blank=True)
+    gambar = models.ImageField(upload_to='gejala/', null=True, blank=True)
     
     def __str__(self):
-        return self.nama_penyakit
+        return self.nama_gejala

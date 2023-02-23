@@ -11,19 +11,19 @@ class BahanAdmin(admin.ModelAdmin):
 admin.site.register(Bahan, BahanAdmin)
 
 class ObatAdmin(admin.ModelAdmin):
-    list_display = ['nama_obat', 'bahan_1', 'bahan_2', 'bahan_3', 'bahan_4', 'bahan_5', 'bahan_6', 'bahan_7','gambar']
-    list_editable = ['bahan_1', 'bahan_2', 'bahan_3', 'bahan_4', 'bahan_5', 'bahan_6', 'bahan_7', 'gambar']
+    list_display = ['nama_obat', 'cara_pembuatan', 'aturan_pemakaian', 'bahan_1', 'bahan_2', 'bahan_3', 'bahan_4', 'bahan_5', 'bahan_6', 'bahan_7','gambar']
+    list_editable = ['cara_pembuatan', 'aturan_pemakaian','bahan_1', 'bahan_2', 'bahan_3', 'bahan_4', 'bahan_5', 'bahan_6', 'bahan_7', 'gambar']
     list_filter = ['nama_obat']
     search_fields = ['nama_obat']
     list_per_page = 25
     
 admin.site.register(Obat, ObatAdmin)
 
-class PenyakitAdmin(admin.ModelAdmin):
-    list_display = ['nama_penyakit', 'gambar']
+class GejalaAdmin(admin.ModelAdmin):
+    list_display = ['nama_gejala', 'gambar']
     list_editable = ['gambar']
-    list_filter = ['nama_penyakit']
-    search_fields = ['nama_penyakit']
+    list_filter = ['nama_gejala']
+    search_fields = ['nama_gejala']
     list_per_page = 25
     
-admin.site.register(Penyakit, PenyakitAdmin)
+admin.site.register(Gejala, GejalaAdmin)

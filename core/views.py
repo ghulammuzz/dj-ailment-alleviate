@@ -15,7 +15,7 @@ from .serialiezer import *
 #         model = Obat
 #         fields = ['bahan']
 
-class DashboardView(viewsets.ModelViewSet):
+class DashboardView(generics.ListAPIView, viewsets.ModelViewSet):
     queryset = Obat.objects.all()
     
     permission_classes = [AllowAny]
@@ -36,4 +36,6 @@ class DashboardView(viewsets.ModelViewSet):
     def get(self, request):
         bahan = Obat.objects.all()
         serializer = ObatSerializer(bahan, many=True)
-        return Response(serializer.data)
+        return Response({
+            "obat": serializer.data,
+        })
