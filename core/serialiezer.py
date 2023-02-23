@@ -13,22 +13,15 @@ class BahanSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Bahan
-        fields = ('nama_bahan','gambar', 'keterangan')
+        fields = ('id','nama_bahan','gambar', 'keterangan')
         
 class ObatSerializer(serializers.ModelSerializer):
     gambar = serializers.SerializerMethodField()
-    # bahan_1 = BahanSerializer()
-    # bahan_2 = BahanSerializer()
-    # bahan_3 = BahanSerializer()
-    # bahan_4 = BahanSerializer()
-    # bahan_5 = BahanSerializer()
-    # bahan_6 = BahanSerializer()
-    # bahan_7 = BahanSerializer()
-
     bahan = serializers.SerializerMethodField()
 
     def get_bahan(self, obj):
         bahan = []
+        
         bahan_1 = BahanSerializer(obj.bahan_1).data
         bahan_2 = BahanSerializer(obj.bahan_2).data
         bahan_3 = BahanSerializer(obj.bahan_3).data
@@ -56,10 +49,7 @@ class ObatSerializer(serializers.ModelSerializer):
             'nama_obat',
             'keterangan',
             'gambar',
+            'cara_pembuatan',
+            'aturan_pemakaian',
             'bahan'
-            # 'bahan_1',
-            # 'bahan_2',
-            # 'bahan_3',
-            # 'bahan_4',
-            # 'bahan_5'
             )

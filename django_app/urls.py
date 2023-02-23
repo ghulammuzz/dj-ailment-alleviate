@@ -6,6 +6,9 @@ from core.views import *
 
 urlpatterns = [
     path('nganu/', admin.site.urls),
-    path('dashboard', DashboardView.as_view({'get': 'list'})),
+    path('dashboard/', DashboardView.as_view()),
+    path('dashboard/<int:pk>', DashboardView.as_view()),
+    path('bahan/<int:pk>/', BahanView.as_view()),
+    path('bahan/', BahanView.as_view()),
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),
-]
+]   

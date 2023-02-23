@@ -1,41 +1,52 @@
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework.response import Response
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, mixins
 from rest_framework.permissions import AllowAny
+from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter, OrderingFilter
-from django_filters.rest_framework import DjangoFilterBackend
-from django_filters import rest_framework as filters
+# from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters import rest_framework as filters
 
 from .models import Bahan
 from .serialiezer import *
 
-# class BahanFilter(filters.FilterSet):
+class DashboardView(
+    generics.ListAPIView,
+    generics.GenericAPIView,
+    mixins.RetrieveModelMixin
+    ):
     
-#     class Meta:
-#         model = Obat
-#         fields = ['bahan']
-
-class DashboardView(generics.ListAPIView, viewsets.ModelViewSet):
+    fields = []
+    for i in range(1,8):
+        fields.append(f'bahan_{i}__nama_bahan')
+    
     queryset = Obat.objects.all()
-    
     permission_classes = [AllowAny]
     serializer_class = ObatSerializer
     filter_backends = [SearchFilter]
-    # filterset_class = BahanFilter
-    search_fields = [
-        'nama_obat',
-        'bahan_1__nama_bahan',
-        'bahan_2__nama_bahan',
-        'bahan_3__nama_bahan',
-        'bahan_4__nama_bahan',
-        'bahan_5__nama_bahan',
-        'bahan_6__nama_bahan',
-        'bahan_7__nama_bahan',
-        ]
+    search_fields = fields
     
-    def get(self, request):
-        bahan = Obat.objects.all()
-        serializer = ObatSerializer(bahan, many=True)
-        return Response({
-            "obat": serializer.data,
-        })
+    def get(self, request, pk=None):
+        if pk:
+            return self.retrieve(request, pk)
+        else:
+            return self.list(request)
+        
+class BahanView(
+    generics.GenericAPIView,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin
+    ):
+    
+    queryset = Bahan.objects.all()
+    permission_classes = [AllowAny]
+    serializer_class = BahanSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ['nama_bahan']
+    
+    def get(self, request, pk=None):
+        if pk:
+            return self.retrieve(request, pk)
+        else:
+            return self.list(request)
