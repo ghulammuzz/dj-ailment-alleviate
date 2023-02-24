@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Bahan, Obat
 
+local = 'http://127.0.0.1:8000'
+deployment = 'https://deployailment.pythonanywhere.com'
+
 def build_url(url):
-    return f'http://127.0.0.1:8000{url}'
+    return f'{local}/media/{url}'
 
 class BahanSerializer(serializers.ModelSerializer):
     
