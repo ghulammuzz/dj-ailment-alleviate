@@ -42,7 +42,7 @@ class BahanView(
     ):
     
     queryset = Bahan.objects.all()
-    # permission_classes = [AllowAny]
+    permission_classes = [AllowAny]
     serializer_class = BahanSerializer
     filter_backends = [SearchFilter]
     search_fields = ['nama_bahan']

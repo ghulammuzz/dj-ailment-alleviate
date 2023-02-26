@@ -5,7 +5,7 @@ local = 'http://127.0.0.1:8000'
 deployment = 'https://deployailment.pythonanywhere.com'
 
 def build_url(url):
-    return f'{local}/media/{url}'
+    return f'{deployment}/media/{url}'
 
 class BahanSerializer(serializers.ModelSerializer):
     
