@@ -21,16 +21,23 @@ ALLOWED_HOSTS = ['127.0.0.1','deployailment.pythonanywhere.com', "*", 'localhost
 # Application definition
 
 INSTALLED_APPS = [
+    # system
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # third party
+    'rest_framework_simplejwt',
     'rest_framework',
     'django_filters',
     'django_app',
+    
+    # apps
     'core',
+    'auth'
 ]
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "errors",
