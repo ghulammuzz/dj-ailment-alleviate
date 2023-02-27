@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     
     # apps
     'core',
-    'auth'
-]
+    'accounts',
+    ]
+AUTH_USER_MODEL = 'accounts.User'
 REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "errors",
     "DEFAULT_AUTHENTICATION_CLASSES": (
