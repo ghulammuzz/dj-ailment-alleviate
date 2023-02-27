@@ -21,7 +21,6 @@ class DashboardView(
     for i in range(1,8):
         fields.append(f'bahan_{i}__nama_bahan')
     
-    
     queryset = Obat.objects.all()
     permission_classes = [AllowAny]
     serializer_class = ObatSerializer
