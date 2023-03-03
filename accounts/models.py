@@ -27,21 +27,17 @@ class BaseUserManager(BaseUserManager):
         return user
     
     
-    def create_peracik(self, email, password, password_2, is_peracik=True, **extra_fields):
-        return self.create_user(email, password, password_2, is_peracik=is_peracik, **extra_fields)
+    def create_peracik(self, email, username, password, password_2, is_peracik=True, **extra_fields):
+        return self.create_user(email, username, password, password_2, is_peracik=is_peracik, **extra_fields)
     
-    def create_admin(self, email, password, password_2, is_admin=True, **extra_fields):
-        return self.create_user(email, password, password_2, is_admin=is_admin, **extra_fields)
-    
-    def create_reader(self, email, password, password_2, is_reader=True, **extra_fields):
-        return self.create_user(email, password, password_2, is_reader=is_reader, **extra_fields)
-    
+    def create_admin(self, username, email, password, password_2, is_admin=True, **extra_fields):
+        return self.create_user(email, username, password, password_2, is_admin=is_admin, **extra_fields)
+         
 class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
     is_peracik = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
-    is_reader = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -55,9 +51,11 @@ class Peracik(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alamat = models.TextField()
     no_hp = models.CharField(max_length=15)
+    sertifikat = models.ImageField(upload_to='sertifikat')
+    gambar_pendukung = models.ImageField(upload_to='gambar_pendukung')
     
     def __str__(self):
-        return self.nama
+        return self.user.username
     
 class Admin(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
@@ -65,11 +63,4 @@ class Admin(models.Model):
     no_hp = models.CharField(max_length=15)
     
     def __str__(self):
-        return self.nama
-class Reader(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    alamat = models.TextField()
-    no_hp = models.CharField(max_length=15)
-    
-    def __str__(self):
-        return self.nama
+        return self.user.username
