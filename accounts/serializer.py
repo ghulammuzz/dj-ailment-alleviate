@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from accounts.models import Peracik, User
 
 class PeracikSerializer(serializers.ModelSerializer):
@@ -14,7 +13,6 @@ class PeracikSignUpSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=100)
     password = serializers.CharField(write_only=True, max_length=100)
     password_2 = serializers.CharField(max_length=100)
-    
     
     def create(self, validated_data):
         peracik_data = validated_data.pop('data_peracik')
@@ -40,6 +38,27 @@ class PeracikSignUpSerializer(serializers.Serializer):
         if password != data['password_2']:
             raise serializers.ValidationError({"pesan":"Password tidak cocok"})
         return data
+    
     class Meta:
         model = User
         fields = ('email', 'username', 'password', 'password_2', 'peracik_data')
+        
+class PeracikLoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=100)
+    password = serializers.CharField(write_only=True, max_length=100)
+    
+    
+    def validate(self, data):
+        email = data.get('email')
+        password = data.get('password')
+        
+        if email is None:
+            raise serializers.ValidationError({"pesan":"Email tidak boleh kosong"})
+        if password is None:
+            raise serializers.ValidationError({"pesan":"Password tidak boleh kosong"})
+        
+        return data
+    
+    class Meta:
+        model = User
+        fields = ('email', 'password')

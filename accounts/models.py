@@ -51,6 +51,11 @@ class Peracik(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     alamat = models.TextField()
     no_hp = models.CharField(max_length=15)
+    class Status(models.TextChoices):
+        DITOLAK = 'DITOLAK'
+        MENUNGGU = 'MENUNGGU'
+        DITERIMA = 'DITERIMA'
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.MENUNGGU)
     sertifikat = models.ImageField(upload_to='sertifikat')
     gambar_pendukung = models.ImageField(upload_to='gambar_pendukung')
     
