@@ -21,7 +21,7 @@ class BahanSerializer(serializers.ModelSerializer):
 class ObatSerializer(serializers.ModelSerializer):
     gambar = serializers.SerializerMethodField()
     bahan = serializers.SerializerMethodField()
-
+    
     def get_bahan(self, obj):
         bahan = []
         

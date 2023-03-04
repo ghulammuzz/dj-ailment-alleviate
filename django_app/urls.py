@@ -8,6 +8,8 @@ urlpatterns = [
     path('nganu/', admin.site.urls),
     path('api/', include('accounts.urls')),
     path('dashboard/', DashboardView.as_view()),
+    path('api/peracik/dashboard', DashboardPeracikView.as_view()),
+    path('api/peracik/create/', BuatObatView.as_view()),
     path('dashboard/<int:pk>', DashboardView.as_view()),
     path('bahan/<int:pk>/', BahanView.as_view()),
     path('bahan/', BahanView.as_view()),

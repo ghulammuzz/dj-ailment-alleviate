@@ -57,7 +57,7 @@ class Peracik(models.Model):
         DITERIMA = 'DITERIMA'
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.MENUNGGU)
     sertifikat = models.ImageField(upload_to='sertifikat')
-    gambar_pendukung = models.ImageField(upload_to='gambar_pendukung')
+    gambar_pendukung = models.ImageField(upload_to='gambar_pendukung', blank=True, null=True)
     
     def __str__(self):
         return self.user.username
