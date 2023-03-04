@@ -98,7 +98,7 @@ class BuatObatView(
                 keterangan=request.data['keterangan'],
                 aturan_pemakaian=request.data['aturan_pemakaian'],
                 cara_pembuatan=request.data['cara_pembuatan'],
-                gambar=request.data['gambar'],
+                gambar=request.data.get('gambar', 'obat/default.jpeg'),
                 status='MENUNGGU',
                 bahan_1 = get_object_or_None(Bahan, id=request.data.get('bahan_1', None)),
                 bahan_2 = get_object_or_None(Bahan, id=request.data.get('bahan_2', None)),
@@ -126,7 +126,7 @@ class TambahBahanView(
             data_bahan = Bahan.objects.create(
                 nama_bahan=request.data['nama_bahan'],
                 keterangan=request.data['keterangan'],
-                gambar=request.data['gambar'],
+                gambar=request.data.get('gambar', 'bahan/default.jpeg'),
                 status='MENUNGGU',
             )
             data_bahan.save()
