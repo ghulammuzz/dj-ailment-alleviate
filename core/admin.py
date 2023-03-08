@@ -1,6 +1,9 @@
 from django.contrib import admin
 from .models import *
 
+label = 'Bahan'
+admin.site.site_header = 'Admin Panel Ailmnent Alleviate'
+
 class BahanAdmin(admin.ModelAdmin):
     list_display = ['nama_bahan','status', 'gambar']
     list_editable = ['gambar', 'status']

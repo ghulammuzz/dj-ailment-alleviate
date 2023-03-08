@@ -13,7 +13,7 @@ class Bahan(models.Model):
     def __str__(self):
         return self.nama_bahan
     
-class   Obat(models.Model):
+class Obat(models.Model):
     nama_obat = models.CharField(max_length=100, default='Obat ')
     keterangan = models.TextField(default='_')
     

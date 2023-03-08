@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Bahan, Obat
+from accounts.serializer import PeracikSerializer
 
 local = 'http://127.0.0.1:8000'
 deployment = 'https://deployailment.pythonanywhere.com'
@@ -21,7 +22,12 @@ class BahanSerializer(serializers.ModelSerializer):
 class ObatSerializer(serializers.ModelSerializer):
     gambar = serializers.SerializerMethodField()
     bahan = serializers.SerializerMethodField()
-    
+    peracik = serializers.SerializerMethodField()
+    peracik = PeracikSerializer()
+      
+    # def get_peracik(self, obj):
+    #     return obj.peracik.user.username
+        
     def get_bahan(self, obj):
         bahan = []
         
@@ -50,6 +56,7 @@ class ObatSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'nama_obat',
+            'peracik',
             'keterangan',
             'gambar',
             'cara_pembuatan',

@@ -2,9 +2,14 @@ from rest_framework import serializers
 from accounts.models import Peracik, User
 
 class PeracikSerializer(serializers.ModelSerializer):
+    nama = serializers.SerializerMethodField()
+    
+    def get_nama(self, obj):
+        return obj.user.username
+    
     class Meta:
         model = Peracik
-        fields = ('alamat', 'no_hp', 'sertifikat', 'gambar_pendukung')
+        fields = ('nama','alamat', 'no_hp', 'sertifikat', 'gambar_pendukung')
 
 class PeracikSignUpSerializer(serializers.Serializer):
     data_peracik = PeracikSerializer(required=True)
