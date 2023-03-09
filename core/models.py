@@ -5,6 +5,7 @@ class Bahan(models.Model):
     keterangan = models.TextField(default='_')
     gambar = models.ImageField(upload_to='bahan/', null=True, blank=True, default='bahan/default.jpeg')
     cara_pakai = models.TextField(default='_')
+    category = models.ForeignKey('core.Category', on_delete=models.SET_NULL, null=True, blank=True)
     class Status(models.TextChoices):
         DITOLAK = 'DITOLAK'
         MENUNGGU = 'MENUNGGU'
