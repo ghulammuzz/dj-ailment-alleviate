@@ -12,7 +12,14 @@ class Bahan(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.DITERIMA)
     def __str__(self):
         return self.nama_bahan
+
+class Category(models.Model):
+    name_category = models.CharField(max_length=100)
+    keterangan = models.TextField(default='_')
     
+    def __str__(self):
+        return self.name_category
+
 class Obat(models.Model):
     nama_obat = models.CharField(max_length=100, default='Obat ')
     keterangan = models.TextField(default='_')
