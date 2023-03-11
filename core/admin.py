@@ -6,7 +6,7 @@ admin.site.site_header = 'Admin Panel Ailmnent Alleviate'
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name_category', 'keterangan']
-    list_editable = ['name_category', 'keterangan']
+    # list_editable = ['name_category', 'keterangan']
 
 admin.site.register(Category, CategoryAdmin)
 
