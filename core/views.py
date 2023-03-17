@@ -9,7 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 
 from accounts.models import *
-from .models import Bahan
+from .models import *
 from .serialiezer import *
 
 class DashboardView(
@@ -84,11 +84,11 @@ class DashboardPeracikView(
 class BuatObatView(
     generics.GenericAPIView,
     ):
-    
+
     queryset = Obat.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = ObatSerializer
-    
+
     def post(self, request):
         current_user = request.user
         if Peracik.objects.filter(user=current_user, status='DITERIMA'):
@@ -133,3 +133,11 @@ class TambahBahanView(
             return Response({"pesan":"Menunggu Konfirmasi dari admin"}, status=201)
         else :
             return Response({"pesan":"Akun anda belum diterima oleh admin"}, status=400)
+
+class CategoryWithBahan(generics.GenericAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    
+    def get(self, request):
+        serializer = CategorySerializer(self.get_queryset(), many=True)
+        return Response(serializer.data, status=200)

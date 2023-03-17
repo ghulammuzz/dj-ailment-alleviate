@@ -1,11 +1,19 @@
 from django.db import models
 
+class Category(models.Model):
+    name_category = models.CharField(max_length=100)
+    keterangan = models.TextField(default='_')
+    bahan = models.ManyToManyField('Bahan', blank=True)
+    
+    def __str__(self):
+        return self.name_category
+
 class Bahan(models.Model):
     nama_bahan = models.CharField(max_length=100)
     keterangan = models.TextField(default='_')
     gambar = models.ImageField(upload_to='bahan/', null=True, blank=True, default='bahan/default.jpeg')
     cara_pakai = models.TextField(default='_')
-    category = models.ForeignKey('core.Category', on_delete=models.SET_NULL, null=True, blank=True)
+    # category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
     class Status(models.TextChoices):
         DITOLAK = 'DITOLAK'
         MENUNGGU = 'MENUNGGU'
@@ -14,12 +22,6 @@ class Bahan(models.Model):
     def __str__(self):
         return self.nama_bahan
 
-class Category(models.Model):
-    name_category = models.CharField(max_length=100)
-    keterangan = models.TextField(default='_')
-    
-    def __str__(self):
-        return self.name_category
 
 class Obat(models.Model):
     nama_obat = models.CharField(max_length=100, default='Obat ')

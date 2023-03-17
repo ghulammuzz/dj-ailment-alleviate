@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Bahan, Obat
+from .models import *
 from accounts.serializer import PeracikSerializer
 
 local = 'http://127.0.0.1:8000'
@@ -63,3 +63,15 @@ class ObatSerializer(serializers.ModelSerializer):
             'aturan_pemakaian',
             'bahan'
             )
+        
+class CategorySerializer(serializers.ModelSerializer):
+    
+    bahan = serializers.SerializerMethodField()
+    
+    def get_bahan(self, obj):
+        bahan = BahanSerializer(obj.bahan, many=True).data
+        return bahan
+    
+    class Meta:
+        model = Category
+        fields  = ["name_category", "keterangan", "bahan"]

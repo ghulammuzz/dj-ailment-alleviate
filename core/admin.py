@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 label = 'Bahan'
-admin.site.site_header = 'Admin Panel Ailmnent Alleviate'
+admin.site.site_header = 'Admin Panel Ailment Alleviate'
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name_category', 'keterangan']
