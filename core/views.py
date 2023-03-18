@@ -137,6 +137,7 @@ class TambahBahanView(
 class CategoryWithBahan(generics.GenericAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
     
     def get(self, request):
         serializer = CategorySerializer(self.get_queryset(), many=True)

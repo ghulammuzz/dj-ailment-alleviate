@@ -16,8 +16,8 @@ class PeracikSignUpView(generics.GenericAPIView):
         serializers = self.get_serializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            return Response({"pesan":"Berhasil mendaftar"})
-        return Response({"pesan":"Gagal mendaftar"})
+            return Response({"pesan":"Berhasil mendaftar"}, status=201)
+        return Response({"pesan":"Gagal mendaftar"}, status=400)
 
 class PeracikLoginView(generics.GenericAPIView):
     serializer_class = PeracikLoginSerializer
