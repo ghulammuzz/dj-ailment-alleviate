@@ -78,13 +78,17 @@ class DashboardPeracikView(
         elif Peracik.objects.filter(user=current_user, status='DITERIMA'):
             pending = Obat.objects.filter(peracik__user=current_user, status='MENUNGGU')
             accepted = Obat.objects.filter(peracik__user=current_user, status='DITERIMA')
+            cancelled = Obat.objects.filter(peracik__user=current_user, status='DITOLAK')
             pending_data = ObatSerializer(pending, many=True).data
             accepted_data = ObatSerializer(accepted, many=True).data
+            cancelled_data = ObatSerializer(cancelled, many=True).data
             return Response(
                 {
+                    "status":"DITERIMA",
                     "profile" : serializer_profile,
                     "pending" : pending_data,
                     "accepted" : accepted_data,
+                    "cancelled" : cancelled_data
                 }
             )
 
