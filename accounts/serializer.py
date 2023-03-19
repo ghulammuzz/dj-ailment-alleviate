@@ -81,4 +81,4 @@ class HomePeracikSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Peracik
-        fields = ('nama', 'email')
+        fields = ('nama', 'email', 'status')
