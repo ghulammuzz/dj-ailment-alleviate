@@ -9,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django_filters import rest_framework as filters
 
 from accounts.models import *
+from accounts.serializer import *
 from .models import *
 from .serialiezer import *
 
@@ -63,12 +64,13 @@ class DashboardPeracikView(
     
     def get(self, request, pk=None):
         current_user = request.user
-        
+        user = Peracik.objects.get(user=request.user)
+        serializer_profile = HomePeracikSerializer(user).data
         
         if Peracik.objects.filter(user=current_user, status='MENUNGGU'):
-            return Response({"pesan":"Akun anda belum dikonfirmasi oleh admin"}, status=400)
+            return Response({"pesan":"Akun anda belum dikonfirmasi oleh admin"}, status=200)
         elif Peracik.objects.filter(user=current_user, status='DITOLAK'):
-            return Response({"pesan":"Akun anda ditolak oleh admin"}, status=400)
+            return Response({"pesan":"Akun anda ditolak oleh admin"}, status=200)
         elif Peracik.objects.filter(user=current_user, status='DITERIMA'):
             pending = Obat.objects.filter(peracik__user=current_user, status='MENUNGGU')
             accepted = Obat.objects.filter(peracik__user=current_user, status='DITERIMA')
@@ -76,6 +78,7 @@ class DashboardPeracikView(
             accepted_data = ObatSerializer(accepted, many=True).data
             return Response(
                 {
+                    "profile" : serializer_profile,
                     "pending" : pending_data,
                     "accepted" : accepted_data,
                 }
@@ -142,3 +145,4 @@ class CategoryWithBahan(generics.GenericAPIView):
     def get(self, request):
         serializer = CategorySerializer(self.get_queryset(), many=True)
         return Response(serializer.data, status=200)
+    

@@ -67,3 +67,18 @@ class PeracikLoginSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ('email', 'password')
+
+class HomePeracikSerializer(serializers.ModelSerializer):
+    
+    nama = serializers.SerializerMethodField()
+    email = serializers.SerializerMethodField()
+    
+    def get_nama(self, obj):
+        return obj.user.username
+    
+    def get_email(self, obj):
+        return obj.user.email
+    
+    class Meta:
+        model = Peracik
+        fields = ('nama', 'email')
