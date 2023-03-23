@@ -9,7 +9,7 @@ SECRET_KEY = 'django-insecure-8a3quu-zcw&5m7%y4=mp6!t9oin233p#-ypqg(b%$y3u+5$230
 AUTH_USER_MODEL = 'accounts.User'
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['deployailment.pythonanywhere.com', '*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
