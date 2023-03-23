@@ -32,4 +32,4 @@ class PeracikLoginView(generics.GenericAPIView):
         if User.objects.filter(is_peracik=True, email=email).exists() and user is not None:
             token = create_jwt_pair_for_user(user)
             return Response({"pesan":"Berhasil login", "token":token})
-        return Response({"pesan":"Gagal login"})
+        return Response({"pesan":"Gagal login"}, status=400)

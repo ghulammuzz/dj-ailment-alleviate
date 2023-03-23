@@ -1,14 +1,15 @@
 from django.db import models
+
+# Create your models here.
+from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
 class BaseUserManager(BaseUserManager):
-    def create_user(self, email, username, password, password_2=None, **extra_fields):
+    def create_user(self, email, username, password, password_2, **extra_fields):
         if email is None:
             raise TypeError('Penguna harus memiliki email')
         if password is None:
             raise TypeError('Penguna harus memiliki password')
-        # if password != password_2:
-        #     raise TypeError('Password tidak cocok')
         user = self.model(username=username, email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save()
@@ -29,15 +30,11 @@ class BaseUserManager(BaseUserManager):
     
     def create_peracik(self, email, username, password, password_2, is_peracik=True, **extra_fields):
         return self.create_user(email, username, password, password_2, is_peracik=is_peracik, **extra_fields)
-    
-    def create_admin(self, username, email, password, password_2, is_admin=True, **extra_fields):
-        return self.create_user(email, username, password, password_2, is_admin=is_admin, **extra_fields)
          
 class User(AbstractUser):
     username = models.CharField(max_length=255, unique=True)
     email = models.EmailField(unique=True)
     is_peracik = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -49,23 +46,20 @@ class User(AbstractUser):
     
 class Peracik(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    alamat = models.TextField()
-    no_hp = models.CharField(max_length=15)
+    address = models.TextField()
+    phone_number = models.CharField(max_length=15)
     class Status(models.TextChoices):
-        DITOLAK = 'DITOLAK'
-        MENUNGGU = 'MENUNGGU'
-        DITERIMA = 'DITERIMA'
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.MENUNGGU)
-    sertifikat = models.ImageField(upload_to='sertifikat')
-    gambar_pendukung = models.ImageField(upload_to='gambar_pendukung', blank=True, null=True)
-    
-    def __str__(self):
-        return self.user.username
-    
-class Admin(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    alamat = models.TextField()
-    no_hp = models.CharField(max_length=15)
+        CANCELED = 'CANCELED'
+        WAITING = 'WAITING'
+        ACCEPTED = 'ACCEPTED'
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.WAITING)
+    class Type(models.TextChoices):
+        INSTITUSI = 'INSTITUSI'
+        TRADITIONAL = 'TRADITIONAL'
+    type = models.CharField(max_length=15, choices=Type.choices, default=Type.TRADITIONAL)
+    message_status = models.TextField(blank=True, null=True)
+    certificate = models.ImageField(upload_to='certificate', blank=True, null=True)
+    supporting_image = models.ImageField(upload_to='supporting_image', blank=True, null=True)
     
     def __str__(self):
         return self.user.username

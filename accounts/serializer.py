@@ -1,15 +1,20 @@
 from rest_framework import serializers
 from accounts.models import Peracik, User
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username')
+
 class PeracikSerializer(serializers.ModelSerializer):
-    nama = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
     
     def get_nama(self, obj):
         return obj.user.username
     
     class Meta:
         model = Peracik
-        fields = ('nama','alamat', 'no_hp', 'sertifikat', 'gambar_pendukung')
+        fields = ('name','address', 'phone_number','type', 'certificate', 'supporting_image')
 
 class PeracikSignUpSerializer(serializers.Serializer):
     data_peracik = PeracikSerializer(required=True)
@@ -24,10 +29,11 @@ class PeracikSignUpSerializer(serializers.Serializer):
         data = User.objects.create_peracik(**validated_data)
         Peracik.objects.create(
             user=data,
-            alamat=peracik_data['alamat'],
-            no_hp=peracik_data['no_hp'],
-            sertifikat=peracik_data['sertifikat'],
-            gambar_pendukung=peracik_data['gambar_pendukung']
+            address=peracik_data['address'],
+            type=peracik_data['type'],
+            phone_number=peracik_data['phone_number'],
+            certificate=peracik_data['certificate'],
+            supporting_image=peracik_data['supporting_image']
         ) 
         return data
     
@@ -35,7 +41,9 @@ class PeracikSignUpSerializer(serializers.Serializer):
         
         email = data.get('email')
         password = data.get('password')
-        
+        # exisisting email
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError({"pesan":"Email sudah terdaftar"})
         if email is None:
             raise serializers.ValidationError({"pesan":"Email tidak boleh kosong"})
         if password is None:
@@ -67,18 +75,3 @@ class PeracikLoginSerializer(serializers.Serializer):
     class Meta:
         model = User
         fields = ('email', 'password')
-
-class HomePeracikSerializer(serializers.ModelSerializer):
-    
-    nama = serializers.SerializerMethodField()
-    email = serializers.SerializerMethodField()
-    
-    def get_nama(self, obj):
-        return obj.user.username
-    
-    def get_email(self, obj):
-        return obj.user.email
-    
-    class Meta:
-        model = Peracik
-        fields = ('nama', 'email', 'status')
