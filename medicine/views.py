@@ -1,8 +1,13 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics, mixins
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from accounts.models import Peracik
+
+from accounts.serializer import PeracikSerializer
     
-from .serializer import MedicineSerializer, PeracikDashboardSerializer
+from .serializer import DashboardPeracikSerializer, MedicineSerializer
 from .models import Medicine
 from permission import PeracikPermission
     
@@ -10,8 +15,9 @@ class ListMedicine(generics.ListCreateAPIView, generics.GenericAPIView, mixins.R
     queryset = Medicine.objects.all()
     serializer_class = MedicineSerializer
     filter_backends = [SearchFilter, OrderingFilter]
-    permission_classes = [PeracikPermission]
-    search_files = ['name']
+    permission_classes = [AllowAny]
+    # permission_classes = [PeracikPermission]
+    search_fields = ['name', 'ingredients__name']
     
     def get(self, request, pk=None):
         if pk:
@@ -23,11 +29,21 @@ class ListMedicine(generics.ListCreateAPIView, generics.GenericAPIView, mixins.R
         return super().post(request, *args, **kwargs)
     
 class DashboardPeracik(generics.GenericAPIView):
-    queryset = Medicine.objects.all()
-    serializer_class = PeracikDashboardSerializer
+    queryset = Peracik.objects.all()
+    serializer_class = DashboardPeracikSerializer
     permission_classes = [PeracikPermission]
     
     def get(self, request):
-        return Response(PeracikDashboardSerializer(request.user.peracik).data)
-    
+        serializer = self.get_serializer(request.user.peracik)
+        accepted_medication = Medicine.objects.filter(peracik=request.user.peracik, status='ACCEPTED')
+        waiting_medication = Medicine.objects.filter(peracik=request.user.peracik, status='WAITING')
+        canceled_medication = Medicine.objects.filter(peracik=request.user.peracik, status='CANCELED')
+        return Response({
+            "profile": serializer.data,
+            "accepted_medication": MedicineSerializer(accepted_medication, many=True).data,
+            "waiting_medication": MedicineSerializer(waiting_medication, many=True).data,
+            "canceled_medication": MedicineSerializer(canceled_medication, many=True).data,
+            
+        })
+        
     

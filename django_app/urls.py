@@ -4,6 +4,7 @@ from django.views.static import serve
 from django.conf import settings
 from accounts.views import *
 from category.views import *
+
 from ingredient.views import *
 from medicine.views import *
 
@@ -17,16 +18,16 @@ urlpatterns = [
     path("api/register/", PeracikSignUpView.as_view()),
     
     # list category, ingredients, medicine
-    path("category/", ListCategory.as_view()),
+    path("api/category/", ListCategory.as_view()),
     
-    path("ingredient", ListIngredient.as_view()),
-    path("ingredient/<int:pk>", ListIngredient.as_view()),
+    path("api/ingredient", ListIngredient.as_view()),
+    path("api/ingredient/<int:pk>", ListIngredient.as_view()),
     
-    path("medicine/<int:pk>", ListMedicine.as_view()),
-    path("medicine", ListMedicine.as_view()),
+    path("api/medicine/<int:pk>", ListMedicine.as_view()),
+    path("api/medicine", ListMedicine.as_view()),
     
     # dashboard peracik
-    path("dashboard/peracik", DashboardPeracik.as_view()),
+    path("api/dashboard/peracik", DashboardPeracik.as_view()),
     
     # media root
     path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),

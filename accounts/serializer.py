@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PeracikSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField()
     
-    def get_nama(self, obj):
+    def get_name(self, obj):
         return obj.user.username
     
     class Meta:

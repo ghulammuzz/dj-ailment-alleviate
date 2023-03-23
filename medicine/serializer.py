@@ -8,6 +8,13 @@ from ingredient.models import Ingredient
 from ingredient.serializer import IngredientSerializer
 from accounts.serializer import UserSerializer
 
+local = 'http://127.0.0.1:8000'
+deployment = 'https://deployailment.pythonanywhere.com'
+
+def build_url(url):
+    return f'{deployment}{url}'
+
+
 class MedicineSerializer(serializers.ModelSerializer):
     
     ingredients = IngredientSerializer(many=True, required=True)
@@ -15,8 +22,14 @@ class MedicineSerializer(serializers.ModelSerializer):
     peracik = serializers.StringRelatedField(read_only=True)
     usage_rules = serializers.CharField(required=True)
     ways_to_use = serializers.CharField(required=True)
-    image = serializers.ImageField(required=False)
-        
+    image = serializers.SerializerMethodField()
+
+    def get_image(self, obj):
+        try:
+            return build_url(obj.image.url)
+        except:
+            return None
+    
     def create(self, validated_data):
         ingredients = validated_data.pop('ingredients')
         if ingredients:
@@ -38,25 +51,26 @@ class MedicineSerializer(serializers.ModelSerializer):
         model = Medicine
         fields = ("id","name", "image", "description","status", "usage_rules", "ways_to_use", "peracik", "message_status","ingredients")
 
-class PeracikDashboardSerializer(serializers.ModelSerializer):
-    profile = serializers.SerializerMethodField()
-    accepted_medicine = serializers.SerializerMethodField()
-    pending_medicine = serializers.SerializerMethodField()
-    canceled_medicine = serializers.SerializerMethodField()
+class DashboardPeracikSerializer(serializers.ModelSerializer):
     
-    def get_profile(self, obj):
-        return { "name": obj.user.username, "email": obj.user.email}
+    email = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
     
-    def get_accepted_medicine(self, obj):
-        return MedicineSerializer(Medicine.objects.filter(status='ACCEPTED'), many=True).data
-    def get_pending_medicine(self, obj):
-        return MedicineSerializer(Medicine.objects.filter(status='WAITING'), many=True).data
-    def get_canceled_medicine(self, obj):
-        return MedicineSerializer(Medicine.objects.filter(status='CANCELED'), many=True).data
-
+    def get_email(self, obj):
+        try :
+            return obj.user.email
+        except:
+            return None
+    
+    def get_name(self, obj):
+        try :
+            return obj.user.username
+        except:
+            return None
+    
     class Meta:
         model = Peracik
-        fields = ("profile","accepted_medicine", "pending_medicine", "canceled_medicine")
+        fields = ("name", "email", "status", "message_status")
 # nama obat
 # image
 # peracik
