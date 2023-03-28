@@ -1,0 +1,13 @@
+{
+    "email": "",
+    "username": "",
+    "password": "",
+    "password_2": "",
+    "data_peracik": {
+        "address": "",
+        "phone_number": "",
+        "type": null,
+        "certificate": null,
+        "supporting_image": null
+    }
+}

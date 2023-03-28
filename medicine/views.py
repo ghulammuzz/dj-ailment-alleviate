@@ -38,12 +38,27 @@ class DashboardPeracik(generics.GenericAPIView):
         accepted_medication = Medicine.objects.filter(peracik=request.user.peracik, status='ACCEPTED')
         waiting_medication = Medicine.objects.filter(peracik=request.user.peracik, status='WAITING')
         canceled_medication = Medicine.objects.filter(peracik=request.user.peracik, status='CANCELED')
-        return Response({
-            "profile": serializer.data,
-            "accepted_medication": MedicineSerializer(accepted_medication, many=True).data,
-            "waiting_medication": MedicineSerializer(waiting_medication, many=True).data,
-            "canceled_medication": MedicineSerializer(canceled_medication, many=True).data,
-            
-        })
+        
+        peracik_current = Peracik.objects.get(user=request.user)
+        
+        if peracik_current.status == 'WAITING':
+            return Response({
+                "message": "Your account is still waiting for approval"
+            }, status=200)
+        elif peracik_current.status == 'CANCELED':
+            return Response({
+                "message": "Your account has been canceled",
+                "tips" : "Please contact admin for more information",
+                "message_status" : serializer.data['message_status']
+            }, status=200)
+        else :
+            return Response({
+                "status" : "ACCEPTED",
+                "profile": serializer.data,
+                "accepted_medication": MedicineSerializer(accepted_medication, many=True).data,
+                "waiting_medication": MedicineSerializer(waiting_medication, many=True).data,
+                "canceled_medication": MedicineSerializer(canceled_medication, many=True).data,
+                
+            })
         
     
