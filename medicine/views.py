@@ -43,10 +43,12 @@ class DashboardPeracik(generics.GenericAPIView):
         
         if peracik_current.status == 'WAITING':
             return Response({
+                "status" : "WAITING",
                 "message": "Your account is still waiting for approval"
             }, status=200)
         elif peracik_current.status == 'CANCELED':
             return Response({
+                "status" : "CANCELLED",
                 "message": "Your account has been canceled",
                 "tips" : "Please contact admin for more information",
                 "message_status" : serializer.data['message_status']
@@ -61,4 +63,3 @@ class DashboardPeracik(generics.GenericAPIView):
                 
             })
         
-    
