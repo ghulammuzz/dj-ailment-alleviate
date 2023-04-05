@@ -12,7 +12,7 @@ class Ingredient(models.Model):
         ACCEPTED = 'ACCEPTED'
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.WAITING)
     medicine_many = models.ManyToManyField('medicine.Medicine', blank=True)
-    category = models.ForeignKey('category.Category', on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey('category.Category', on_delete=models.SET_NULL, null=True, blank=True)    
     
     def __str__(self):
         return self.name

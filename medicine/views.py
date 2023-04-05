@@ -4,11 +4,13 @@ from rest_framework import generics, mixins
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from accounts.models import Peracik
+from ingredient.serializer import IngredientSerializer, IngredientsDashboardSerializer
 
 from accounts.serializer import PeracikSerializer
     
 from .serializer import DashboardPeracikSerializer, MedicineSerializer
 from .models import Medicine
+from ingredient.models import Ingredient
 from permission import PeracikPermission
     
 class ListMedicine(generics.ListCreateAPIView, generics.GenericAPIView, mixins.RetrieveModelMixin):
@@ -30,7 +32,7 @@ class ListMedicine(generics.ListCreateAPIView, generics.GenericAPIView, mixins.R
     
 class DashboardPeracik(generics.GenericAPIView):
     queryset = Peracik.objects.all()
-    serializer_class = DashboardPeracikSerializer
+    serializer_class = PeracikSerializer
     permission_classes = [PeracikPermission]
     
     def get(self, request):
@@ -38,6 +40,10 @@ class DashboardPeracik(generics.GenericAPIView):
         accepted_medication = Medicine.objects.filter(peracik=request.user.peracik, status='ACCEPTED')
         waiting_medication = Medicine.objects.filter(peracik=request.user.peracik, status='WAITING')
         canceled_medication = Medicine.objects.filter(peracik=request.user.peracik, status='CANCELED')
+        accepted_ingredient = Ingredient.objects.filter(status='ACCEPTED')
+        canceled_ingredient = Ingredient.objects.filter(status='CANCELED')
+        waiting_ingredient = Ingredient.objects.filter(status='WAITING')
+    
         
         peracik_current = Peracik.objects.get(user=request.user)
         
@@ -60,6 +66,8 @@ class DashboardPeracik(generics.GenericAPIView):
                 "accepted_medication": MedicineSerializer(accepted_medication, many=True).data,
                 "waiting_medication": MedicineSerializer(waiting_medication, many=True).data,
                 "canceled_medication": MedicineSerializer(canceled_medication, many=True).data,
-                
+                "accepted_ingredient": IngredientSerializer(accepted_ingredient, many=True).data,
+                "waiting_ingredient": IngredientSerializer(waiting_ingredient, many=True).data,
+                "canceled_ingredient": IngredientSerializer(canceled_ingredient, many=True).data,
             })
         

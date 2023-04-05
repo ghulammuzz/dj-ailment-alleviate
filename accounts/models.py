@@ -60,6 +60,7 @@ class Peracik(models.Model):
     message_status = models.TextField(blank=True, null=True)
     certificate = models.ImageField(upload_to='certificate', blank=True, null=True)
     supporting_image = models.ImageField(upload_to='supporting_image', blank=True, null=True)
+    ingredients = models.ManyToManyField('ingredient.Ingredient', blank=True)
     
     def __str__(self):
         return self.user.username

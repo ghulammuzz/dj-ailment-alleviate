@@ -39,11 +39,13 @@ class MedicineSerializer(serializers.ModelSerializer):
         
         current_peracik = get_object_or_404(Peracik, user=self.context['request'].user)
         medicine= Medicine.objects.create(**validated_data, peracik=current_peracik)
+        peracik = get_object_or_404(Peracik, user=self.context['request'].user)
         for ingredient in ingredients:
             ingredient = get_object_or_404(Ingredient, **ingredient)
             if ingredient not in medicine.ingredients.all():
                 medicine.ingredients.add(ingredient)
                 ingredient.medicine_many.add(medicine)
+                peracik.ingredients.add(ingredient)
 
         return medicine
     
